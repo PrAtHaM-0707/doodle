@@ -151,6 +151,16 @@
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
+.gameLayer {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
 .canvas {
     flex: 1;
     cursor: crosshair;
@@ -158,7 +168,7 @@
     display: block;
     min-height: 0; /* Allow shrinking in flex container */
     width: 100%;   /* Ensure it fills width */
-    object-fit: contain; /* Keep aspect ratio if needed, or fill */
+    touch-action: none;
 }
 
 .canvasDisabled {
@@ -177,123 +187,144 @@
 }
 
 .toolbar {
-    height: 70px;
-    background: #ecf0f1;
+    height: 80px;
+    background: #ffffff;
     display: flex;
     align-items: center;
-    padding: 0 1rem;
+    padding: 0 1.5rem;
     justify-content: space-between;
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid #edf2f7;
     flex-shrink: 0;
-    transition: opacity 0.3s;
+    transition: all 0.3s;
+    box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
 .toolbarDisabled {
-    opacity: 0.5;
+    opacity: 0.6;
     pointer-events: none;
-    background: #e0e0e0;
+    filter: grayscale(0.8);
+    background: #f8fafc;
 }
 
 .colors {
     display: flex;
-    gap: 6px;
+    gap: 8px;
     flex-wrap: wrap;
-    max-width: 50%;
+    max-width: 60%;
+    padding: 4px;
+    background: #f1f5f9;
+    border-radius: 12px;
+    padding: 8px 12px;
 }
 
 .colorSwatch {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
     cursor: pointer;
-    border: 2px solid white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transition: transform 0.1s;
+    border: 2px solid transparent;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     flex-shrink: 0;
 }
 
 .colorSwatch:hover {
-    transform: scale(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .activeColor {
-    transform: scale(1.2);
-    border-color: #333;
+    transform: scale(1.1);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
     z-index: 1;
 }
 
 .tools {
     display: flex;
-    gap: 1rem;
+    gap: 1.2rem;
     align-items: center;
+    background: #f1f5f9;
+    padding: 8px 16px;
+    border-radius: 12px;
 }
 
 .brushControl {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-right: 15px;
+    gap: 12px;
+    margin-right: 5px;
     background: white;
-    padding: 5px 12px;
-    border-radius: 20px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
 .brushPreview {
     border-radius: 50%;
     background: black;
-    border: 1px solid #ddd;
+    border: 1px solid #e2e8f0;
     flex-shrink: 0;
+    transition: all 0.2s;
 }
 
 .sizeSlider {
-    width: 80px;
-    height: 4px;
+    width: 100px;
+    height: 6px;
     -webkit-appearance: none;
-    background: #dfe6e9;
-    border-radius: 2px;
+    background: #e2e8f0;
+    border-radius: 3px;
     outline: none;
 }
 
 .sizeSlider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
-    background: #2d3436;
+    background: #3b82f6;
     cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.1s;
+}
+
+.sizeSlider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
 }
 
 .toolBtn {
     padding: 0;
-    border-radius: 8px;
+    border-radius: 10px;
     background: white;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    transition: all 0.2s;
-    border: none;
-    color: #555;
+    width: 44px;
+    height: 44px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid transparent;
+    color: #64748b;
 }
 
 .toolBtn:hover {
-    background: #eaeff2;
+    background: #fff;
     transform: translateY(-2px);
-    color: #333;
+    color: #3b82f6;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .activeTool {
-    background: #2d3436;
-    color: white;
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+    background: #eff6ff;
+    color: #3b82f6;
+    border-color: #3b82f6;
+    box-shadow: none;
 }
 
 .activeTool:hover {
-    background: #2d3436;
-    color: white;
+    background: #dbeafe;
+    color: #2563eb;
     transform: none;
 }
 
