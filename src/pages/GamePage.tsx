@@ -19,6 +19,7 @@ const GamePage: React.FC = () => {
     
     // Game state
     const [timeLeft, setTimeLeft] = useState(60);
+    const [overlayTimer, setOverlayTimer] = useState(5); // Separate timer for startup/ selection
     const [secretWord, setSecretWord] = useState<string | null>(null);
     const [wordChoices, setWordChoices] = useState<string[]>([]); // Choices for drawer
     const [messages, setMessages] = useState<{user: string, text: string, type?: 'system'|'chat'}[]>([]);
@@ -37,6 +38,12 @@ const GamePage: React.FC = () => {
     const isStarting = currentRoom?.roundPhase === 'starting';
     const isReview = currentRoom?.roundPhase === 'review';
     const isEnded = currentRoom?.status === 'ended';
+    
+    // Derived state for socket handler
+    const phaseRef = useRef(currentRoom?.roundPhase);
+    useEffect(() => {
+        phaseRef.current = currentRoom?.roundPhase;
+    }, [currentRoom?.roundPhase]);
 
     // Handle Player Sorting (smoothly)
     useEffect(() => {
@@ -136,7 +143,12 @@ const GamePage: React.FC = () => {
         };
 
         const handleTimerUpdate = (time: number) => {
-            setTimeLeft(time);
+            const phase = phaseRef.current;
+            if (phase === 'starting' || phase === 'selecting') {
+                 setOverlayTimer(time);
+            } else {
+                 setTimeLeft(time);
+            }
         };
 
         const handleYourTurn = (data: { word: string }) => {
@@ -320,7 +332,7 @@ const GamePage: React.FC = () => {
                             <div className={styles.waitingMessage}>
                                 <div style={{fontSize: '4rem', marginBottom: '20px'}}>🚀</div>
                                 <h2>Game Starting!</h2>
-                                <h1 style={{fontSize: '5rem', margin: '20px 0', color: '#ffd700'}}>{timeLeft}</h1>
+                                <h1 style={{fontSize: '5rem', margin: '20px 0', color: '#ffd700'}}>{overlayTimer}</h1>
                                 <p>Get ready...</p>
                             </div>
                         </div>
@@ -414,7 +426,7 @@ const GamePage: React.FC = () => {
                             {isDrawer ? (
                                 <div className={styles.wordSelection}>
                                     <h2>Choose a Word!</h2>
-                                    <div className={styles.selectionTimer}>{timeLeft}s</div>
+                                    <div className={styles.selectionTimer}>{overlayTimer}s</div>
                                     <div className={styles.wordOptions}>
                                         {wordChoices.length > 0 ? (
                                             wordChoices.map(word => (
@@ -432,7 +444,7 @@ const GamePage: React.FC = () => {
                                     <div style={{fontSize: '3rem', marginBottom: '15px'}}>🎨</div>
                                     <h3>Drawer is choosing a word...</h3>
                                     <div className={styles.selectionTimer} style={{background: 'rgba(0,0,0,0.2)', color: 'white', border: '1px solid white'}}>
-                                        {timeLeft}s
+                                        {overlayTimer}s
                                     </div>
                                 </div>
                             )}
