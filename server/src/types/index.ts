@@ -24,6 +24,7 @@ export interface Room {
     drawTime: number;
     currentDrawerId: string | null;
     currentWord: string | null; // This will now be the MASKED word for clients (e.g. "_ _ _")
+    revealedWord: string | null; // The word revealed at the end of the round
     wordsToChoose: string[];
     maxPlayers: number;
     hints: number;

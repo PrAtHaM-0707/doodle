@@ -4,6 +4,7 @@ import { useGame } from '../context/GameContext';
 import { Send, Eraser, Trash2, Pencil, Clock, LogOut, Trophy, RotateCcw } from 'lucide-react';
 import styles from './GamePage.module.css';
 import clsx from 'clsx';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 const GamePage: React.FC = () => {
     const { roomId } = useParams<{ roomId: string }>();
@@ -26,12 +27,53 @@ const GamePage: React.FC = () => {
     const [chatInput, setChatInput] = useState('');
     const chatContainerRef = useRef<HTMLDivElement>(null);
     const [showLeaveModal, setShowLeaveModal] = useState(false);
+    
+    // Animation and Sorting
+    const [animationParent] = useAutoAnimate();
+    const [sortedPlayerIds, setSortedPlayerIds] = useState<string[]>([]);
 
     const isDrawer = currentRoom?.currentDrawerId === socket?.id;
     const isSelecting = currentRoom?.roundPhase === 'selecting';
     const isStarting = currentRoom?.roundPhase === 'starting';
     const isReview = currentRoom?.roundPhase === 'review';
     const isEnded = currentRoom?.status === 'ended';
+
+    // Handle Player Sorting (smoothly)
+    useEffect(() => {
+        if (!currentRoom) return;
+
+        setSortedPlayerIds(prev => {
+            // Get current active IDs
+            const currentIds = currentRoom.players.map(p => p.id);
+            
+            // 1. Filter out left players
+            let nextIds = prev.filter(id => currentIds.includes(id));
+            
+            // 2. Add new players (append at end)
+            const newPlayers = currentIds.filter(id => !prev.includes(id));
+            nextIds = [...nextIds, ...newPlayers];
+
+            // 3. Re-sort if we are in Review/Ended phase or starting a new round
+            // This prevents jumping during gameplay when scores update
+            if (isReview || isEnded || isStarting) {
+                // Create a map for quick lookup
+                const playerMap = new Map(currentRoom.players.map(p => [p.id, p]));
+                nextIds.sort((a,b) => {
+                    const pA = playerMap.get(a);
+                    const pB = playerMap.get(b);
+                    if (!pA || !pB) return 0;
+                    return pB.score - pA.score; // Descending
+                });
+            }
+
+            // Simple deep comparison check to avoid unnecessary updates if order is same
+            if (JSON.stringify(prev) === JSON.stringify(nextIds)) {
+                return prev;
+            }
+            
+            return nextIds;
+        });
+    }, [currentRoom, isReview, isEnded, isStarting]);
 
     // Navigation check
     useEffect(() => {
@@ -252,8 +294,12 @@ const GamePage: React.FC = () => {
             </div>
 
             <main className={styles.main}>
-                <div className={styles.scoreboard}>
-                    {currentRoom.players.map((player, idx) => (
+                <div className={styles.scoreboard} ref={animationParent}>
+                    {sortedPlayerIds.map((playerId, idx) => {
+                        const player = currentRoom.players.find(p => p.id === playerId);
+                        if (!player) return null;
+                        
+                        return (
                         <div key={player.id} className={clsx(styles.playerScore, player.id === currentRoom.currentDrawerId && styles.activeDrawer)}>
                            <div className={styles.scoreAvatar}>{player.avatar}</div>
                            <div className={styles.playerInfo}>
@@ -263,7 +309,8 @@ const GamePage: React.FC = () => {
                            <div className={styles.rank}>#{idx + 1}</div>
                            {player.id === currentRoom.currentDrawerId && <Pencil size={16} className={styles.pencilIndicator} />}
                         </div>
-                    ))}
+                        );
+                    })}
                 </div>
 
                 <div className={styles.canvasArea}>
@@ -286,7 +333,7 @@ const GamePage: React.FC = () => {
                                 <h2>Time's Up!</h2>
                                 <p style={{marginTop: '20px'}}>The word was:</p>
                                 <h1 style={{fontSize: '4rem', margin: '20px 0', color: '#00ff00', letterSpacing: '5px'}}>
-                                    {secretWord || currentRoom.currentWord || '???'}
+                                    {currentRoom.revealedWord || secretWord || currentRoom.currentWord || '???'}
                                 </h1>
                                 <p>Next round starting soon...</p>
                             </div>

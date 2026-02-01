@@ -37,6 +37,7 @@ class RoomManager {
             drawTime: drawTime,
             currentDrawerId: null,
             currentWord: null, // Public masked word
+            revealedWord: null,
             secretWord: null,
             wordsToChoose: [],
             maxPlayers: 8,
@@ -187,6 +188,7 @@ class RoomManager {
         room.guessedCorrectly = [];
         room.canvasHistory = [];
         room.currentWord = null;
+        room.revealedWord = null;
         room.secretWord = null;
 
         // Pick Drawer from those who haven't drawn this round
@@ -303,6 +305,7 @@ class RoomManager {
         
         // Reveal Word
         room.currentWord = room.secretWord;
+        room.revealedWord = room.secretWord;
         room.roundPhase = 'review';
         
         if (this.onRoomUpdate) this.onRoomUpdate(roomId, this.getPublicRoom(room));
@@ -375,6 +378,7 @@ class RoomManager {
         room.currentRound = 1;
         room.currentDrawerId = null;
         room.currentWord = null;
+        room.revealedWord = null;
         room.secretWord = null;
         room.roundPhase = null;
         room.drawnPlayers = [];

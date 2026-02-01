@@ -2,7 +2,6 @@ import React, { createContext, useContext, useState, type ReactNode, useCallback
 import { io, Socket } from 'socket.io-client';
 import toast from 'react-hot-toast';
 
-// Use environment variable for production, fallback to localhost for dev
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
 
 export interface Player {
@@ -22,6 +21,7 @@ export interface Room {
   drawTime: number;
   currentDrawerId: string | null;
   currentWord: string | null;
+  revealedWord?: string | null;
   wordsToChoose: string[];
   maxPlayers: number;
   hints: number;
