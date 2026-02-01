@@ -97,7 +97,7 @@ const GamePage: React.FC = () => {
 
     // Update timer from room state initially
     useEffect(() => {
-        if (currentRoom) {
+        if (currentRoom && currentRoom.roundPhase !== 'starting') {
             setTimeLeft(currentRoom.drawTime); // Default/Start value
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps

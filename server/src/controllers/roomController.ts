@@ -138,8 +138,8 @@ class RoomManager {
         room.drawnPlayers = [];
         room.roundPhase = 'starting';
         
-        // 3 Seconds countdown before first turn
-        let countdown = 3;
+        // 5 Seconds countdown before first turn
+        let countdown = 5;
         
         // Emit initial state
         if (this.onRoomUpdate) this.onRoomUpdate(roomId, this.getPublicRoom(room));
@@ -171,17 +171,19 @@ class RoomManager {
         room.drawnPlayers = room.drawnPlayers.filter(id => activePlayerIds.includes(id));
 
         if (room.drawnPlayers.length >= room.players.length) {
-            // Everyone has drawn, increment round
-            room.currentRound++;
-            room.drawnPlayers = [];
-            
-            if (room.currentRound > room.totalRounds) {
+            // Everyone has drawn current round
+            // Check if game is over (currentRound is already the last one)
+            if (room.currentRound >= room.totalRounds) {
                 room.status = 'ended';
                 room.roundPhase = null;
                 room.currentDrawerId = null;
                 if (this.onRoomUpdate) this.onRoomUpdate(roomId, this.getPublicRoom(room));
                 return null;
             }
+
+            // Start new round
+            room.currentRound++;
+            room.drawnPlayers = [];
         }
 
         // Reset Turn State
@@ -201,8 +203,9 @@ class RoomManager {
              return;
         }
 
-        const drawerIndex = Math.floor(Math.random() * availableDrawers.length);
-        const drawer = availableDrawers[drawerIndex];
+        // Pick next drawer in sequence (Round Robin) instead of random
+        // Relies on room.players preserving join order
+        const drawer = availableDrawers[0];
         room.currentDrawerId = drawer.id;
         room.drawnPlayers.push(drawer.id);
 
