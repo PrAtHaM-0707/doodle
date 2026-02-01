@@ -69,7 +69,7 @@ const LandingPage: React.FC = () => {
             <header className={styles.logoArea}>
                 <h1 className={styles.title}>
                     <Pencil className={styles.logoIcon} size={50} />
-                    Scribbl
+                    Scribbll
                 </h1>
             </header>
 

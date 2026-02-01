@@ -26,6 +26,7 @@ export interface Room {
   maxPlayers: number;
   hints: number;
   roundPhase?: 'starting' | 'selecting' | 'drawing' | 'review' | null;
+  guessedCorrectly?: string[];
 }
 
 interface GameContextType {
