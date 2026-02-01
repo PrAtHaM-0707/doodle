@@ -321,14 +321,39 @@ class RoomManager {
         }, 5000);
     }
 
+    private levenshtein(a: string, b: string): number {
+        const matrix = [];
+        for (let i = 0; i <= b.length; i++) {
+            matrix[i] = [i];
+        }
+        for (let j = 0; j <= a.length; j++) {
+            matrix[0][j] = j;
+        }
+        for (let i = 1; i <= b.length; i++) {
+            for (let j = 1; j <= a.length; j++) {
+                if (b.charAt(i - 1) == a.charAt(j - 1)) {
+                    matrix[i][j] = matrix[i - 1][j - 1];
+                } else {
+                    matrix[i][j] = Math.min(
+                        matrix[i - 1][j - 1] + 1,
+                        Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1)
+                    );
+                }
+            }
+        }
+        return matrix[b.length][a.length];
+    }
 
-    processGuess(roomId: string, socketId: string, guess: string): { isCorrect: boolean; score?: number } {
+    processGuess(roomId: string, socketId: string, guess: string): { isCorrect: boolean; isClose?: boolean; score?: number } {
         const room = this.rooms.get(roomId);
         if (!room || !room.secretWord || room.status !== 'playing' || room.roundPhase !== 'drawing') return { isCorrect: false };
         
         if (socketId === room.currentDrawerId) return { isCorrect: false }; // Drawer can't guess!
 
-        if (guess.trim().toUpperCase() === room.secretWord.toUpperCase()) {
+        const normalizedGuess = guess.trim().toUpperCase();
+        const normalizedSecret = room.secretWord.toUpperCase();
+
+        if (normalizedGuess === normalizedSecret) {
             if (room.guessedCorrectly.includes(socketId)) return { isCorrect: true }; // Already guessed
             
             // Calculate Score (Simple: 10 * time left?)
@@ -351,6 +376,17 @@ class RoomManager {
 
             return { isCorrect: true, score: points };
         }
+
+        // Check for closeness if not correct
+        // For short words (<=3 chars), exact match only. 
+        // For >3 chars, distance <= 2 is close.
+        if (normalizedSecret.length > 3) {
+            const distance = this.levenshtein(normalizedGuess, normalizedSecret);
+            if (distance > 0 && distance <= 2) {
+                return { isCorrect: false, isClose: true };
+            }
+        }
+
         return { isCorrect: false };
     }
 

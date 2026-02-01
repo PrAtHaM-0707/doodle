@@ -121,6 +121,16 @@ export const setupSocket = (io: Server) => {
                 const room = roomManager.getRoomBySocketId(socket.id);
                 if (room) io.to(payload.roomId).emit('room_updated', roomManager.getPublicRoom(room));
             } else {
+                // If it's close, send a private system message to the sender
+                if (result.isClose) {
+                     io.to(socket.id).emit('chat', { 
+                        user: 'System', 
+                        text: `You are close! ('${payload.message}' is close)`, 
+                        type: 'system' 
+                    });
+                }
+                
+                // Always broadcast the original message (as requested by user)
                 io.to(payload.roomId).emit('chat', { user: payload.user, text: payload.message, type: 'chat' });
             }
         });
