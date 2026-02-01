@@ -105,7 +105,7 @@ class RoomManager {
 
         if (wasDrawer && room.status === 'playing') {
             // End round early if drawer leaves
-            this.endRound(roomId);
+            this.endRound(roomId, 'drawer_left');
         }
 
         return this.getPublicRoom(room);
@@ -192,6 +192,7 @@ class RoomManager {
         room.currentWord = null;
         room.revealedWord = null;
         room.secretWord = null;
+        room.roundEndReason = undefined;
 
         // Pick Drawer from those who haven't drawn this round
         const availableDrawers = room.players.filter(p => !room.drawnPlayers.includes(p.id));
@@ -279,7 +280,7 @@ class RoomManager {
             if (this.onTick) this.onTick(roomId, timeLeft);
             
             if (timeLeft <= 0) {
-                 this.endRound(roomId);
+                 this.endRound(roomId, 'timer');
             }
         }, 1000);
 
@@ -300,7 +301,7 @@ class RoomManager {
     public onRoomUpdate?: (roomId: string, room: Room) => void;
     public onTimerUpdate?: (roomId: string, time: number) => void;
 
-    endRound(roomId: string) {
+    endRound(roomId: string, reason: 'timer' | 'all_guessed' | 'drawer_left' = 'timer') {
         const room = this.rooms.get(roomId);
         if (!room) return;
         
@@ -310,6 +311,7 @@ class RoomManager {
         room.currentWord = room.secretWord;
         room.revealedWord = room.secretWord;
         room.roundPhase = 'review';
+        room.roundEndReason = reason;
         
         if (this.onRoomUpdate) this.onRoomUpdate(roomId, this.getPublicRoom(room));
 
@@ -371,7 +373,7 @@ class RoomManager {
             // Check if all guessed
             const guessers = room.players.filter(p => p.id !== room.currentDrawerId);
             if (room.guessedCorrectly.length >= guessers.length) {
-                this.endRound(roomId); // End early
+                this.endRound(roomId, 'all_guessed'); // End early
             }
 
             return { isCorrect: true, score: points };

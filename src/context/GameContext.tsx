@@ -26,6 +26,7 @@ export interface Room {
   maxPlayers: number;
   hints: number;
   roundPhase?: 'starting' | 'selecting' | 'drawing' | 'review' | null;
+  roundEndReason?: 'timer' | 'all_guessed' | 'drawer_left';
   guessedCorrectly?: string[];
 }
 

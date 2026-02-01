@@ -342,7 +342,11 @@ const GamePage: React.FC = () => {
                     {isReview && (
                         <div className={styles.overlay} style={{ zIndex: 60, background: 'rgba(0,0,0,0.9)' }}>
                             <div className={styles.waitingMessage}>
-                                <h2>{(currentRoom.guessedCorrectly?.length || 0) >= (currentRoom.players.length - 1) ? 'Everyone Guessed!' : "Time's Up!"}</h2>
+                                <h2>
+                                    {currentRoom.roundEndReason === 'all_guessed' ? 'Everyone Guessed!' : 
+                                     currentRoom.roundEndReason === 'drawer_left' ? 'Drawer Left!' : 
+                                     "Time's Up!"}
+                                </h2>
                                 <p style={{marginTop: '20px'}}>The word was:</p>
                                 <h1 style={{fontSize: '4rem', margin: '20px 0', color: '#00ff00', letterSpacing: '5px'}}>
                                     {currentRoom.revealedWord || secretWord || currentRoom.currentWord || '???'}

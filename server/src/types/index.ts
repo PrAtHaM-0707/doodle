@@ -29,6 +29,7 @@ export interface Room {
     maxPlayers: number;
     hints: number;
     roundPhase: 'starting' | 'selecting' | 'drawing' | 'review' | null;
+    roundEndReason?: 'timer' | 'all_guessed' | 'drawer_left';
     // Game state tracking
     roundStartTime: number | null;
     guessedCorrectly: string[]; // List of player IDs who guessed the word
