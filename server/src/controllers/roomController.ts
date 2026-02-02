@@ -9,10 +9,85 @@ export interface ServerRoom extends Room {
 }
 
 const WORDS = [
-    'APPLE', 'BANANA', 'CAT', 'DOG', 'ELEPHANT', 'FISH', 'GUITAR', 'HOUSE', 'ICE CREAM',
-    'JELLYFISH', 'KITE', 'LION', 'MOON', 'NEST', 'OCTOPUS', 'PENGUIN', 'QUEEN', 'ROBOT',
-    'SUN', 'TREE', 'UMBRELLA', 'VIOLIN', 'WHALE', 'XYLOPHONE', 'YACHT', 'ZEBRA', 'CAR',
-    'BUS', 'TRAIN', 'AIRPLANE', 'BOAT', 'BIKE', 'COMPUTER', 'PHONE', 'BOOK', 'PEN', 'PENCIL'
+    // Animals
+    'DOG', 'CAT', 'ELEPHANT', 'GIRAFFE', 'LION', 'TIGER', 'BEAR', 'RABBIT', 'MOUSE', 'DUCK', 
+    'PENGUIN', 'MONKEY', 'COW', 'PIG', 'SHEEP', 'HORSE', 'ZEBRA', 'KANGAROO', 'KOALA', 'PANDA',
+    'FROG', 'TURTLE', 'SNAKE', 'LIZARD', 'CROCODIL', 'SHARK', 'DOLPHIN', 'WHALE', 'OCTOPUS', 'CRAB',
+    'LOBSTER', 'JELLYFISH', 'STARFISH', 'SEAHORSE', 'EAGLE', 'OWL', 'PARROT', 'FLAMINGO', 'SWAN',
+    'PEACOCK', 'BUTTERFLY', 'BEE', 'ANT', 'SPIDER', 'SCORPION', 'BAT', 'WOLF', 'FOX', 'DEER',
+    'MOOSE', 'CAMEL', 'LLAMA', 'GORILLA', 'CHIMPANZEE', 'RHINO', 'HIPPO', 'SQUIRREL', 'RACOON',
+    'BEAVER', 'OTTER', 'SEAL', 'WALRUS', 'PLATYPUS', 'OSTRICH', 'EMU', 'KIWI', 'DINOSAUR', 'DRAGON',
+    'UNICORN', 'PHOENIX', 'GRIFFIN', 'WEREWOLF', 'VAMPIRE', 'YETI', 'ALIEN', 'ROBOT', 'MONSTER',
+
+    // Food & Drink
+    'APPLE', 'BANANA', 'ORANGE', 'GRAPE', 'STRAWBERRY', 'CHERRY', 'LEMON', 'LIME', 'WATERMELON', 'PINEAPPLE',
+    'COCONUT', 'MANGO', 'PEACH', 'PEAR', 'PLUM', 'KIWI', 'TOMATO', 'POTATO', 'CARROT', 'CORN',
+    'BROCCOLI', 'CUCUMBER', 'MUSHROOM', 'ONION', 'GARLIC', 'PEPPER', 'PUMPKIN', 'AVOCADO', 'EGGPLANT',
+    'BREAD', 'TOAST', 'SANDWICH', 'BURGER', 'PIZZA', 'HOTDOG', 'TACO', 'BURRITO', 'SUSHI', 'RICE',
+    'NOODLE', 'PASTA', 'SPAGHETTI', 'STEAK', 'CHICKEN', 'BACON', 'EGG', 'CHEESE', 'MILK', 'YOGURT',
+    'ICECREAM', 'CAKE', 'COOKIE', 'DONUT', 'PIE', 'MUFFIN', 'CROISSANT', 'PANCAKE', 'WAFFLE', 'CHOCOLATE',
+    'CANDY', 'LOLLIPOP', 'GUM', 'POPCORN', 'CHIPS', 'PRETZEL', 'FRIES', 'SODA', 'JUICE', 'COFFEE',
+    'TEA', 'WATER', 'BEER', 'WINE', 'COCKTAIL', 'SALAD', 'SOUP', 'CEREAL', 'HONEY', 'JAM',
+
+    // Objects
+    'TABLE', 'CHAIR', 'SOFA', 'BED', 'DESK', 'SHELF', 'CLOSET', 'LAMP', 'RUG', 'MIRROR',
+    'CLOCK', 'WATCH', 'TELEPHONE', 'COMPUTER', 'LAPTOP', 'TABLET', 'KEYBOARD', 'MOUSE', 'SCREEN', 'CAMERA',
+    'HEADPHONES', 'SPEAKER', 'RADIO', 'TV', 'REMOTE', 'BATTERY', 'BULB', 'FLASHLIGHT', 'CANDLE', 'MATCH',
+    'LIGHTER', 'PEN', 'PENCIL', 'ERASER', 'MARKER', 'CRAYON', 'BRUSH', 'PAINT', 'CANVAS', 'PAPER',
+    'BOOK', 'NOTEBOOK', 'MAGAZINE', 'NEWSPAPER', 'ENVELOPE', 'LETTER', 'STAMP', 'BOX', 'BAG', 'BACKPACK',
+    'PURSE', 'WALLET', 'KEY', 'LOCK', 'DOOR', 'WINDOW', 'ROOF', 'WALL', 'FLOOR', 'STAIRS',
+    'LADDER', 'FENCE', 'GATE', 'BRIDGE', 'TOWER', 'CASTLE', 'HOUSE', 'APPARTMENT', 'SCHOOL', 'HOSPITAL',
+    'BANK', 'STORE', 'SHOP', 'MARKET', 'RESTAURANT', 'CAFE', 'BAR', 'HOTEL', 'AIRPORT', 'STATION',
+    'FARM', 'BARN', 'ZOO', 'PARK', 'BEACH', 'FOREST', 'MOUNTAIN', 'RIVER', 'LAKE', 'OCEAN',
+    'SEA', 'ISLAND', 'DESERT', 'CAVE', 'VOLCANO', 'PLANET', 'STAR', 'MOON', 'SUN', 'CLOUD',
+    'RAIN', 'SNOW', 'STORM', 'WIND', 'FIRE', 'ICE', 'SMOKE', 'DUST', 'SAND', 'MUD',
+
+    // Vehicles
+    'CAR', 'BUS', 'TRUCK', 'VAN', 'TAXI', 'POLICE', 'AMBULANCE', 'FIRETRUCK', 'TRACTOR', 'MOTORCYCLE',
+    'SCOOTER', 'BICYCLE', 'SKATEBOARD', 'ROLLERBLADE', 'TRAIN', 'SUBWAY', 'TRAM', 'AIRPLANE', 'HELICOPTER', 'ROCKET',
+    'BOAT', 'SHIP', 'YACHT', 'SUBMARINE', 'JETSKI', 'CANOE', 'KAYAK', 'RAFT', 'BALLOON', 'UFO',
+
+    // Clothing & Accessories
+    'SHIRT', 'PANTS', 'SHORTS', 'DRESS', 'SKIRT', 'COAT', 'JACKET', 'SWEATER', 'HOODIE', 'VEST',
+    'SUIT', 'TIE', 'BOWTIE', 'HAT', 'CAP', 'HELMET', 'SCARF', 'GLOVES', 'MITTENS', 'SOCKS',
+    'SHOES', 'BOOTS', 'SNEAKERS', 'NANDALS', 'SLIPPERS', 'GLASSES', 'SUNGLASSES', 'GOGGLES', 'MASK', 'BELT',
+    'WATCH', 'RING', 'NECKLACE', 'EARRING', 'BRACELET', 'BUTTON', 'ZIPPER', 'POCKET', 'UMBRELLA', 'CANE',
+
+    // Sports & Hobbies
+    'SOCCER', 'FOOTBALL', 'BASKETBALL', 'BASEBALL', 'TENNIS', 'VOLLEYBALL', 'GOLF', 'HOCKEY', 'CRICKET', 'RUGBY',
+    'BADMINTON', 'PINGPONG', 'BOXING', 'WRESTLING', 'KARATE', 'JUDO', 'SWIMMING', 'DIVING', 'SURFING', 'SKIING',
+    'SNOWBOARD', 'SKATING', 'CYCLING', 'RUNNING', 'JUMPING', 'DANCING', 'SINGING', 'READING', 'WRITING', 'DRAWING',
+    'GAMING', 'COOKING', 'BAKING', 'FISHING', 'HUNTING', 'CAMPING', 'HIKING', 'CLIMBING', 'FLYING', 'DRIVING',
+
+    // Music
+    'GUITAR', 'PIANO', 'DRUM', 'VIOLIN', 'CELLO', 'FLUTE', 'TRUMPET', 'SAXOPHONE', 'TUBA', 'HARP',
+    'ACCORDION', 'BANJO', 'UKULELE', 'MICROPHONE', 'SPEAKER', 'HEADSET', 'RECORD', 'CD', 'TAPE', 'RADIO',
+
+    // Tools & Professions
+    'HAMMER', 'SCREWDRIVER', 'WRENCH', 'PLIERS', 'SAW', 'DRILL', 'AXE', 'SHOVEL', 'RAKE', 'HOE',
+    'BROOM', 'MOP', 'BUCKET', 'SPONGE', 'TOWEL', 'SOAP', 'SHAMPOO', 'TOOTHBRUSH', 'TOOTHPASTE', 'COMB',
+    'DOCTOR', 'NURSE', 'WHAA', 'DENTIST', 'VET', 'TEACHER', 'STUDENT', 'POLICE', 'FIREFIGHTER', 'SOLDIER',
+    'PILOT', 'ASTRONAUT', 'CHEF', 'COOK', 'WAITER', 'ARTIST', 'SINGER', 'ACTOR', 'CLOWN', 'MAGICIAN',
+    'KING', 'QUEEN', 'PRINCE', 'PRINCESS', 'KNIGHT', 'NINJA', 'PIRATE', 'COWBOY', 'GHOST', 'SKELETON',
+    
+    // Abstract & Miscellaneous
+    'HAPPY', 'SAD', 'ANGRY', 'SCARED', 'TIRED', 'SICK', 'HOT', 'COLD', 'FAST', 'SLOW',
+    'BIG', 'SMALL', 'TALL', 'SHORT', 'OLD', 'NEW', 'DIRTY', 'CLEAN', 'WET', 'DRY',
+    'HARD', 'SOFT', 'HEAVY', 'LIGHT', 'DARK', 'BRIGHT', 'COLOR', 'SHAPE', 'LINE', 'DOT',
+
+    // Naughty / Cheeky (PG-13, Skribbl-safe)
+'Naughty', 'Flirty', 'Crush', 'Kiss', 'Lipstick', 'Perfume', 'Romance', 'Date',
+'Heartbreak', 'Lovebite', 'Blush', 'Wink', 'Tease', 'Secret', 'Gossip', 'Scandal',
+'Drama', 'Seduce', 'Charm', 'Attraction', 'Chemistry', 'Jealous', 'Obsessed',
+'Stalker', 'Ex', 'Breakup', 'Makeup', 'LateNight', 'Midnight', 'Bedroom',
+'Underwear', 'Lingerie', 'Bikini', 'Thong', 'Bra', 'Panties',
+'SixPack', 'Abs', 'Biceps', 'Curves', 'Figure', 'Makeup',
+'MirrorSelfie', 'HotPic', 'DM', 'Screenshot', 'Blocked', 'Unfollowed',
+'BadBoy', 'BadGirl', 'SugarDaddy', 'GoldDigger', 'Playboy', 'Playgirl',
+'Party', 'Club', 'Dancefloor', 'Pole', 'Strip', 'Lap',
+'Hangover', 'Shot', 'Drunk', 'Tipsy', 'BeerPong', 'TruthOrDare',
+'Taboo', 'Forbidden', 'Sneaky', 'Wild', 'Rebellious', 'Risky'
+
 ];
 
 class RoomManager {
